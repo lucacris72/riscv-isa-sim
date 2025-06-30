@@ -105,8 +105,14 @@ install path.
     $ apt-get install device-tree-compiler libboost-regex-dev libboost-system-dev
     $ mkdir build
     $ cd build
-    $ ../configure --prefix=$RISCV
-    $ make
+    $ unset CC CXX CPPFLAGS LDFLAGS LIBS LD
+    $ export CC=/usr/bin/gcc
+    $ export CXX=/usr/bin/g++
+    $ export RISCV=/opt/riscv
+    $ export CPPFLAGS="-I/usr/include"
+    $ export LDFLAGS="-L/usr/lib/x86_64-linux-gnu"
+    $ ../configure --prefix=$RISCV --with-boost=/usr --with-boost-libdir=/usr/lib/x86_64-linux-gnu
+    $ make -j$(nproc)
     $ [sudo] make install
 
 If your system uses the `yum` package manager, you can substitute
