@@ -1,12 +1,14 @@
-// In riscv/insns/macrst.h
+// in riscv/insns/macrst.h
 
 // Logica per l'istruzione MACRST (macrst rd)
-// L'operazione è: ACC = 0; rd = 0
+// Comportamento: Salva il valore corrente di ACC, azzera ACC,
+// e scrive il valore salvato in rd.
 
-// Azzera il registro accumulatore
+// 1. Leggi il valore corrente dell'accumulatore e salvalo in una variabile temporanea.
+reg_t last_acc_val = p->get_state()->acc_reg;
+
+// 2. Resetta l'accumulatore a 0 per le operazioni successive.
 p->get_state()->acc_reg = 0;
 
-// Scrivi 0 nel registro destinazione per coerenza e per avere un risultato predicibile.
-// Se la tua istruzione non dovesse scrivere in rd, potresti omettere questa riga,
-// ma l'implementazione è più pulita così.
-WRITE_RD(0);
+// 3. Scrivi il valore letto in precedenza nel registro destinazione (rd).
+WRITE_RD(last_acc_val);
